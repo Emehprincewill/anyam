@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#2a1a08">
+<title>Eneagbo &amp; Terza-Gwa — Wedding Programme</title>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #fdf7ee;
+    font-family: 'EB Garamond', Georgia, serif;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+
+  /* ═════════ BOOK FRAMEWORK ═════════ */
+  .book {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: #fdf7ee;
+  }
+
+  .pages-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+
+  .book-page {
+    flex: 0 0 100vw;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+    scrollbar-width: thin;
+    scrollbar-color: #c8a96e55 transparent;
+  }
+
+  .book-page::-webkit-scrollbar { width: 4px; }
+  .book-page::-webkit-scrollbar-track { background: transparent; }
+  .book-page::-webkit-scrollbar-thumb { background: #c8a96e55; border-radius: 2px; }
+
+  /* ═════════ FULL-SCREEN PAGE CARD ═════════ */
+  .page {
+    background: #fdf7ee;
+    border: 1px solid #c8a96e;
+    position: relative;
+    padding: 3.2rem 1.8rem 4.5rem;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+
+  .book-page.is-active .page {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.15s;
+  }
+
+  /* Pages with lots of content align to top */
+  .page.page-scroll {
+    justify-content: flex-start;
+  }
+
+  .corner-svg { position: absolute; width: 56px; height: 56px; pointer-events: none; }
+  .c-tl { top: 10px; left: 10px; }
+  .c-tr { top: 10px; right: 10px; transform: scaleX(-1); }
+  .c-bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+  .c-br { bottom: 10px; right: 10px; transform: scale(-1,-1); }
+
+  .pre-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: #9a6f2e;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .couple-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    font-style: italic;
+    text-align: center;
+    color: #2e1c08;
+    line-height: 1.2;
+  }
+
+  .amp { font-size: 1.9rem; color: #9a6f2e; display: block; }
+
+  .gold-rule {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0.7rem 0;
+    color: #c8a96e;
+  }
+  .gold-rule::before, .gold-rule::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: #c8a96e;
+    opacity: 0.7;
+  }
+
+  .weds-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #9a6f2e;
+    text-align: center;
+  }
+
+  .venue-church {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #2e1c08;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .venue-location {
+    font-size: 0.82rem;
+    font-style: italic;
+    color: #7a5828;
+    margin-top: 0.2rem;
+    text-align: center;
+  }
+  .date-line {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 2.5px;
+    text-align: center;
+    color: #2e1c08;
+    margin: 0.6rem 0 0.2rem;
+    text-transform: uppercase;
+  }
+  .time-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    text-align: center;
+    color: #9a6f2e;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 1.6rem 0 1rem;
+    color: #9a6f2e;
+  }
+  .section-head:first-child { margin-top: 0; }
+  .section-head::before, .section-head::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: #c8a96e;
+    opacity: 0.6;
+  }
+  .section-head span {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .event-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 0.65rem;
+  }
+  .event-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.78rem;
+    color: #c8a96e;
+    min-width: 18px;
+    text-align: right;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .event-body { flex: 1; }
+  .event-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.02rem;
+    color: #2e1c08;
+    line-height: 1.3;
+  }
+  .event-sub {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: #7a5828;
+    margin-top: 1px;
+    line-height: 1.4;
+  }
+
+  .ministers-block {
+    margin-top: 1.6rem;
+    padding-top: 1.2rem;
+    border-top: 0.5px solid #c8a96e;
+    text-align: center;
+  }
+  .minister-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.96rem;
+    color: #2e1c08;
+    line-height: 1.75;
+  }
+
+  .hymn-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #9a6f2e;
+    text-align: center;
+    margin-bottom: 0.9rem;
+  }
+  .hymn-verse { margin-bottom: 0.9rem; }
+  .verse-num {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    color: #c8a96e;
+    margin-bottom: 0.22rem;
+  }
+  .verse-text {
+    font-size: 0.92rem;
+    color: #2e1c08;
+    line-height: 1.78;
+    font-style: italic;
+  }
+  .chorus-box {
+    border-left: 2px solid #c8a96e;
+    padding-left: 1rem;
+    margin: 0.5rem 0 0.9rem;
+  }
+  .chorus-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.52rem;
+    letter-spacing: 2px;
+    color: #9a6f2e;
+    margin-bottom: 0.2rem;
+  }
+
+  .appreciation-box {
+    border: 0.5px solid #c8a96e;
+    padding: 1.4rem 1.6rem;
+    text-align: center;
+    background: #fef9f0;
+  }
+  .appr-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #9a6f2e;
+    margin-bottom: 0.8rem;
+  }
+  .appr-text {
+    font-size: 0.98rem;
+    font-style: italic;
+    color: #3a2510;
+    line-height: 1.9;
+  }
+  .hearts { color: #c0392b; font-size: 1.2rem; margin-top: 0.8rem; letter-spacing: 4px; }
+
+  /* ═════════ NAVIGATION CHROME ═════════ */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #c8a96e, #d4a05a);
+    transition: width 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 50;
+    box-shadow: 0 0 8px rgba(200, 169, 110, 0.6);
+  }
+
+  .nav-dots {
+    position: fixed;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 50;
+    padding: 8px 14px;
+    background: rgba(42, 26, 8, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 20px;
+  }
+
+  .nav-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(200, 169, 110, 0.35);
+    cursor: pointer;
+    transition: all 0.35s ease;
+    border: none;
+    padding: 0;
+  }
+
+  .nav-dot.active {
+    background: #d4a05a;
+    width: 22px;
+    border-radius: 4px;
+    box-shadow: 0 0 8px rgba(212, 160, 90, 0.7);
+  }
+
+  .nav-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(200, 169, 110, 0.4);
+    background: rgba(42, 26, 8, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #d4a05a;
+    border-radius: 50%;
+    cursor: pointer;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+
+  .nav-arrow:hover:not(:disabled) {
+    background: rgba(200, 169, 110, 0.3);
+    color: #fdf7ee;
+    border-color: #d4a05a;
+  }
+
+  .nav-arrow:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+  }
+
+  .nav-arrow.prev { left: 14px; }
+  .nav-arrow.next { right: 14px; }
+
+  /* Page counter */
+  .page-counter {
+    position: fixed;
+    top: 14px;
+    right: 16px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: #c8a96e;
+    z-index: 50;
+    padding: 6px 12px;
+    background: rgba(42, 26, 8, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+  }
+
+  /* Swipe hint (shows once on first page) */
+  .swipe-hint {
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    color: #c8a96e;
+    z-index: 50;
+    opacity: 0.75;
+    pointer-events: none;
+    animation: swipeHint 2.2s ease-in-out infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes swipeHint {
+    0%, 100% { transform: translateX(-50%) translateX(0); opacity: 0.5; }
+    50% { transform: translateX(-50%) translateX(-8px); opacity: 0.9; }
+  }
+
+  .swipe-hint.hidden { display: none; }
+
+  /* Hide arrows on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .nav-arrow { display: none; }
+  }
+
+  @media (max-width: 560px) {
+    .nav-arrow { display: none; }
+    .page { padding: 2.8rem 1.4rem 4rem; }
+    .couple-names { font-size: 2rem; }
+    .corner-svg { width: 48px; height: 48px; }
+  }
+
+  @media (max-width: 380px) {
+    .page { padding: 2.6rem 1.1rem 4rem; }
+    .couple-names { font-size: 1.8rem; }
+    .event-title { font-size: 0.98rem; }
+    .verse-text { font-size: 0.88rem; }
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    .pages-track { transition: transform 0.2s linear; }
+    .page { transition: opacity 0.2s linear; transform: none; }
+    .swipe-hint { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="book">
+
+  <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+  <div class="page-counter" id="pageCounter">1 / 6</div>
+
+  <div class="pages-track" id="pagesTrack">
+
+    <!-- ══════════════ PAGE 1: COVER ══════════════ -->
+    <div class="book-page">
+      <div class="page">
+        <div style="text-align:center; margin-bottom:0.4rem;">
+          <svg width="200" height="32" viewBox="0 0 200 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 16 Q28 5 48 16 Q68 27 88 16 Q108 5 128 16 Q148 27 168 16 Q188 5 192 16" stroke="#c8a96e" stroke-width="0.7" fill="none" opacity="0.55"/>
+            <circle cx="100" cy="12" r="3.8" fill="#d4a05a" opacity="0.65"/>
+            <circle cx="100" cy="12" r="1.8" fill="#8b6020" opacity="0.7"/>
+            <circle cx="78" cy="18" r="2.6" fill="#d4a05a" opacity="0.45"/>
+            <circle cx="122" cy="18" r="2.6" fill="#d4a05a" opacity="0.45"/>
+            <ellipse cx="55" cy="13" rx="5" ry="3" fill="#c8a96e" opacity="0.35"/>
+            <ellipse cx="145" cy="13" rx="5" ry="3" fill="#c8a96e" opacity="0.35"/>
+            <path d="M88 16 L100 8 L112 16" stroke="#c8a96e" stroke-width="0.5" fill="none" opacity="0.4"/>
+          </svg>
+        </div>
+
+        <p class="pre-title">Our Wedding Programme</p>
+
+        <div class="couple-names">
+          Eneagbo Otache
+          <span class="amp">&amp;</span>
+          Terza-Gwa Anyam
+        </div>
+
+        <div class="gold-rule"><span>◆</span></div>
+        <p class="weds-tag">are joined in Holy Matrimony</p>
+
+        <div style="margin-top:0.9rem;">
+          <div class="venue-church">God's Destiny Ministries Int'l</div>
+          <div class="venue-location">Obu-Otukpa, Ogbadibo L.G.A., Benue State</div>
+        </div>
+
+        <div class="gold-rule" style="margin:0.8rem 0 0.5rem;"><span>◆</span></div>
+        <p class="date-line">Saturday, 25th April, 2026</p>
+        <p class="time-line">By 10:00 AM Prompt</p>
+      </div>
+    </div>
+
+    <!-- ══════════════ PAGE 2: ORDER OF SERVICE + MINISTERS ══════════════ -->
+    <div class="book-page">
+      <div class="page page-scroll">
+
+        <div class="section-head"><span>Order of Service</span></div>
+
+        <div class="event-row"><div class="event-num">1</div><div class="event-body"><div class="event-title">Soft Music</div></div></div>
+        <div class="event-row"><div class="event-num">2</div><div class="event-body"><div class="event-title">Opening Prayer</div></div></div>
+        <div class="event-row"><div class="event-num">3</div><div class="event-body"><div class="event-title">Praise and Worship</div></div></div>
+        <div class="event-row"><div class="event-num">4</div><div class="event-body"><div class="event-title">Procession of Groom &amp; Groomsmen</div></div></div>
+        <div class="event-row"><div class="event-num">5</div><div class="event-body"><div class="event-title">Procession of Bride &amp; Bride's Train</div></div></div>
+        <div class="event-row">
+          <div class="event-num">6</div>
+          <div class="event-body">
+            <div class="event-title">Congregational Hymn 1</div>
+            <div class="event-sub">O Happy Day</div>
+          </div>
+        </div>
+        <div class="event-row"><div class="event-num">7</div><div class="event-body"><div class="event-title">Declaration of Purpose</div></div></div>
+        <div class="event-row">
+          <div class="event-num">8</div>
+          <div class="event-body">
+            <div class="event-title">First Bible Reading</div>
+            <div class="event-sub">Genesis 2:18–25</div>
+          </div>
+        </div>
+        <div class="event-row">
+          <div class="event-num">9</div>
+          <div class="event-body">
+            <div class="event-title">Second Bible Reading</div>
+            <div class="event-sub">1 Peter 3:1–9</div>
+          </div>
+        </div>
+        <div class="event-row"><div class="event-num">10</div><div class="event-body"><div class="event-title">Marital Charge</div></div></div>
+        <div class="event-row"><div class="event-num">11</div><div class="event-body"><div class="event-title">Marital Vows &amp; Presentation of Token of Love</div></div></div>
+        <div class="event-row"><div class="event-num">12</div><div class="event-body"><div class="event-title">Joining</div></div></div>
+        <div class="event-row"><div class="event-num">13</div><div class="event-body"><div class="event-title">Prophetic Prayers</div></div></div>
+        <div class="event-row"><div class="event-num">14</div><div class="event-body"><div class="event-title">Signing of the Marriage Register</div></div></div>
+        <div class="event-row"><div class="event-num">15</div><div class="event-body"><div class="event-title">Presentation of Certificate &amp; Couple</div></div></div>
+        <div class="event-row"><div class="event-num">16</div><div class="event-body"><div class="event-title">Choir Ministration</div></div></div>
+        <div class="event-row"><div class="event-num">17</div><div class="event-body"><div class="event-title">Message</div></div></div>
+        <div class="event-row"><div class="event-num">18</div><div class="event-body"><div class="event-title">Church Offering</div></div></div>
+        <div class="event-row"><div class="event-num">19</div><div class="event-body"><div class="event-title">Photography with Officiating Ministers</div></div></div>
+        <div class="event-row"><div class="event-num">20</div><div class="event-body"><div class="event-title">Benediction</div></div></div>
+        <div class="event-row"><div class="event-num">21</div><div class="event-body"><div class="event-title">Recession</div></div></div>
+
+        <div class="ministers-block">
+          <div class="section-head" style="margin-top:0;"><span>Officiating Ministers</span></div>
+          <div class="minister-name">Rev. Pst/Mrs. Mick Ochai</div>
+          <div class="minister-name">Pst. John Edache</div>
+          <div class="minister-name">Pst. Tim Akuji</div>
+          <div class="minister-name">Pst. Veronica Enenche</div>
+          <div class="minister-name">Pst. John Abah</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════════ PAGE 3: ORDER OF RECEPTION ══════════════ -->
+    <div class="book-page">
+      <div class="page page-scroll">
+
+        <div class="section-head"><span>Order of Reception</span></div>
+
+        <div class="event-row"><div class="event-num">1</div><div class="event-body"><div class="event-title">Music</div></div></div>
+        <div class="event-row"><div class="event-num">2</div><div class="event-body"><div class="event-title">Arrival of Guests</div></div></div>
+        <div class="event-row"><div class="event-num">3</div><div class="event-body"><div class="event-title">Introduction of Special Guests</div></div></div>
+        <div class="event-row"><div class="event-num">4</div><div class="event-body"><div class="event-title">Invitation of Dignitaries to High Table</div></div></div>
+        <div class="event-row"><div class="event-num">5</div><div class="event-body"><div class="event-title">Procession of Couple — Red Carpet Dance</div></div></div>
+        <div class="event-row"><div class="event-num">6</div><div class="event-body"><div class="event-title">Opening Prayer</div></div></div>
+        <div class="event-row"><div class="event-num">7</div><div class="event-body"><div class="event-title">Chairman's Opening Speech</div></div></div>
+        <div class="event-row"><div class="event-num">8</div><div class="event-body"><div class="event-title">Presentation &amp; Breaking of Kola Nut</div></div></div>
+        <div class="event-row"><div class="event-num">9</div><div class="event-body"><div class="event-title">Light Refreshment</div></div></div>
+        <div class="event-row"><div class="event-num">10</div><div class="event-body"><div class="event-title">Introduction of the Cake</div></div></div>
+        <div class="event-row"><div class="event-num">11</div><div class="event-body"><div class="event-title">Couple's First Assignment</div></div></div>
+        <div class="event-row"><div class="event-num">12</div><div class="event-body"><div class="event-title">Nuptial Dance</div></div></div>
+        <div class="event-row"><div class="event-num">13</div><div class="event-body"><div class="event-title">Presentation of Gifts</div></div></div>
+        <div class="event-row"><div class="event-num">14</div><div class="event-body"><div class="event-title">Vote of Thanks</div></div></div>
+        <div class="event-row"><div class="event-num">15</div><div class="event-body"><div class="event-title">Closing Prayer</div></div></div>
+
+      </div>
+    </div>
+
+    <!-- ══════════════ PAGE 4: APPRECIATION ══════════════ -->
+    <div class="book-page">
+      <div class="page">
+
+        <div class="section-head"><span>A Note of Gratitude</span></div>
+
+        <div class="appreciation-box">
+          <p class="appr-title">Appreciation</p>
+          <p class="appr-text">With profound gratitude, we register our deep appreciation to God Almighty, for ALL He has done — and to everyone who, in one way or the other, contributed to the success of our wedding ceremony, we say a big thank you. May the Most High God reward you bountifully in every area of your life.</p>
+          <p class="appr-text" style="margin-top:0.6rem; font-weight:500;">Amen.</p>
+          <div class="hearts">♥ ♥</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════════ PAGE 5: HYMN 1 ══════════════ -->
+    <div class="book-page">
+      <div class="page page-scroll">
+
+        <div class="section-head"><span>Hymn 1</span></div>
+        <p class="hymn-title">O Happy Day</p>
+
+        <div class="hymn-verse">
+          <p class="verse-num">Verse 1</p>
+          <p class="verse-text">O happy day that fixed my choice<br>On Thee, my Saviour and my God!<br>Well may this glowing heart rejoice,<br>And tell its raptures all abroad.</p>
+        </div>
+        <div class="chorus-box">
+          <p class="chorus-label">Chorus</p>
+          <p class="verse-text">Happy day, happy day,<br>When Jesus washed my sins away!<br>He taught me how to watch and pray,<br>And live rejoicing every day;<br>Happy day, happy day,<br>When Jesus washed my sins away!</p>
+        </div>
+        <div class="hymn-verse">
+          <p class="verse-num">Verse 2</p>
+          <p class="verse-text">'Tis done — the great transaction's done;<br>I am my Lord's, and He is mine;<br>He drew me and I followed on,<br>Rejoiced to own the call divine.</p>
+        </div>
+        <div class="hymn-verse">
+          <p class="verse-num">Verse 3</p>
+          <p class="verse-text">Now rest, my long-divided heart,<br>Fixed on this blissful centre, rest;<br>Here have I found a nobler part,<br>Here heav'nly pleasures fill my breast.</p>
+        </div>
+        <div class="hymn-verse">
+          <p class="verse-num">Verse 4</p>
+          <p class="verse-text">High heav'n that hears the solemn vow,<br>That vow renewed shall daily hear!<br>Till in life's latest hour I bow,<br>And bless, in death, a bond so dear.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════════ PAGE 6: HYMN 2 ══════════════ -->
+    <div class="book-page">
+      <div class="page page-scroll">
+
+        <div class="section-head"><span>Hymn 2</span></div>
+        <p class="hymn-title">On Christ the Solid Rock I Stand</p>
+
+        <div class="hymn-verse">
+          <p class="verse-num">Verse 1</p>
+          <p class="verse-text">My hope is built on nothing less<br>than Jesus' blood and righteousness;<br>I dare not trust the sweetest frame,<br>but wholly lean on Jesus' name.</p>
+        </div>
+        <div class="chorus-box">
+          <p class="chorus-label">Chorus</p>
+          <p class="verse-text">On Christ the solid rock I stand,<br>all other ground is sinking sand;<br>all other ground is sinking sand.</p>
+        </div>
+        <div class="hymn-verse">
+          <p class="verse-num">Verse 2</p>
+          <p class="verse-text">When darkness veils his lovely face,<br>I rest on his unchanging grace;<br>in every high and stormy gale,<br>my anchor holds within the veil.</p>
+        </div>
+        <div class="hymn-verse">
+          <p class="verse-num">Verse 3</p>
+          <p class="verse-text">His oath, his covenant, his blood,<br>support me in the whelming flood;<br>when all around my soul gives way,<br>he then is all my hope and stay.</p>
+        </div>
+        <div class="hymn-verse">
+          <p class="verse-num">Verse 4</p>
+          <p class="verse-text">When he shall come with trumpet sound,<br>O may I then in him be found:<br>dressed in his righteousness alone,<br>faultless to stand before the throne.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Navigation -->
+  <button class="nav-arrow prev" id="prevBtn" aria-label="Previous page">‹</button>
+  <button class="nav-arrow next" id="nextBtn" aria-label="Next page">›</button>
+  <div class="nav-dots" id="navDots"></div>
+  <div class="swipe-hint" id="swipeHint">SWIPE →</div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ═════════ CORNER ORNAMENTS (preserved from original) ═════════ */
+  document.querySelectorAll('.page').forEach(page => {
+    [['c-tl'],['c-tr'],['c-bl'],['c-br']].forEach(([cls]) => {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('viewBox','0 0 56 56');
+      svg.setAttribute('fill','none');
+      svg.classList.add('corner-svg', cls);
+      svg.innerHTML = `<path d="M4 52 L4 10 Q4 4 10 4 L52 4" stroke="#c8a96e" stroke-width="0.9" fill="none"/>
+        <path d="M4 28 Q20 22 28 4" stroke="#c8a96e" stroke-width="0.6" fill="none" opacity="0.45"/>
+        <circle cx="4" cy="4" r="2.6" fill="#c8a96e" opacity="0.65"/>
+        <circle cx="28" cy="28" r="1.6" fill="#c8a96e" opacity="0.35"/>`;
+      page.appendChild(svg);
+    });
+  });
+
+  /* ═════════ BOOK NAVIGATION ═════════ */
+  const track = document.getElementById('pagesTrack');
+  const pages = document.querySelectorAll('.book-page');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const dotsContainer = document.getElementById('navDots');
+  const progressBar = document.getElementById('progressBar');
+  const pageCounter = document.getElementById('pageCounter');
+  const swipeHint = document.getElementById('swipeHint');
+
+  const totalPages = pages.length;
+  let currentIndex = 0;
+  let viewportWidth = window.innerWidth;
+
+  // Build dot indicators
+  for (let i = 0; i < totalPages; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to page ' + (i + 1));
+    dot.addEventListener('click', () => goToPage(i));
+    dotsContainer.appendChild(dot);
+  }
+  const dots = dotsContainer.querySelectorAll('.nav-dot');
+
+  // Apply translation
+  function setTrackPosition(offset, animated) {
+    track.style.transition = animated
+      ? 'transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      : 'none';
+    track.style.transform = `translate3d(${offset}px, 0, 0)`;
+  }
+
+  function updateUI() {
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+    pages.forEach((p, i) => p.classList.toggle('is-active', i === currentIndex));
+
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === totalPages - 1;
+
+    const progress = ((currentIndex + 1) / totalPages) * 100;
+    progressBar.style.width = progress + '%';
+    pageCounter.textContent = (currentIndex + 1) + ' / ' + totalPages;
+
+    // Hide swipe hint after first navigation
+    if (currentIndex > 0 && !swipeHint.classList.contains('hidden')) {
+      swipeHint.classList.add('hidden');
+    }
+
+    // Reset inner scroll on the active page so each page starts at the top
+    pages[currentIndex].scrollTop = 0;
+  }
+
+  function goToPage(index, animated = true) {
+    if (index < 0) index = 0;
+    if (index > totalPages - 1) index = totalPages - 1;
+    currentIndex = index;
+    setTrackPosition(-currentIndex * viewportWidth, animated);
+    updateUI();
+  }
+
+  // Initialize
+  setTrackPosition(0, false);
+  updateUI();
+  pages[0].classList.add('is-active');
+
+  /* ═════════ BUTTON + KEYBOARD ═════════ */
+  prevBtn.addEventListener('click', () => goToPage(currentIndex - 1));
+  nextBtn.addEventListener('click', () => goToPage(currentIndex + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+      e.preventDefault();
+      goToPage(currentIndex + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      goToPage(currentIndex - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goToPage(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goToPage(totalPages - 1);
+    }
+  });
+
+  /* ═════════ TOUCH GESTURES ═════════ */
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchCurrentX = 0;
+  let isTouching = false;
+  let lockedDirection = null; // 'h' or 'v'
+  let baseTranslate = 0;
+
+  track.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchCurrentX = touchStartX;
+    isTouching = true;
+    lockedDirection = null;
+    baseTranslate = -currentIndex * viewportWidth;
+  }, { passive: true });
+
+  track.addEventListener('touchmove', (e) => {
+    if (!isTouching || e.touches.length !== 1) return;
+    const x = e.touches[0].clientX;
+    const y = e.touches[0].clientY;
+    const dx = x - touchStartX;
+    const dy = y - touchStartY;
+
+    if (lockedDirection === null) {
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+        lockedDirection = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
+      }
+    }
+
+    if (lockedDirection === 'h') {
+      e.preventDefault();
+      touchCurrentX = x;
+      // Rubber-band at edges
+      let drag = dx;
+      if ((currentIndex === 0 && dx > 0) ||
+          (currentIndex === totalPages - 1 && dx < 0)) {
+        drag = dx * 0.3;
+      }
+      setTrackPosition(baseTranslate + drag, false);
+    }
+  }, { passive: false });
+
+  track.addEventListener('touchend', () => {
+    if (!isTouching) return;
+    isTouching = false;
+
+    if (lockedDirection !== 'h') return;
+
+    const dx = touchCurrentX - touchStartX;
+    const threshold = Math.min(viewportWidth * 0.2, 80);
+
+    let target = currentIndex;
+    if (dx < -threshold && currentIndex < totalPages - 1) target = currentIndex + 1;
+    else if (dx > threshold && currentIndex > 0) target = currentIndex - 1;
+
+    goToPage(target, true);
+  }, { passive: true });
+
+  track.addEventListener('touchcancel', () => {
+    if (isTouching && lockedDirection === 'h') {
+      goToPage(currentIndex, true);
+    }
+    isTouching = false;
+  }, { passive: true });
+
+  /* ═════════ RESIZE HANDLER ═════════ */
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      viewportWidth = window.innerWidth;
+      setTrackPosition(-currentIndex * viewportWidth, false);
+    }, 80);
+  });
+
+  /* ═════════ MOUSE DRAG (desktop fallback) ═════════ */
+  let mouseDown = false;
+  let mouseStartX = 0;
+  let mouseCurrentX = 0;
+
+  track.addEventListener('mousedown', (e) => {
+    if (e.target.closest('.nav-dot, .nav-arrow, a, button')) return;
+    mouseDown = true;
+    mouseStartX = e.clientX;
+    mouseCurrentX = e.clientX;
+    baseTranslate = -currentIndex * viewportWidth;
+    track.style.cursor = 'grabbing';
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!mouseDown) return;
+    mouseCurrentX = e.clientX;
+    const dx = mouseCurrentX - mouseStartX;
+    let drag = dx;
+    if ((currentIndex === 0 && dx > 0) ||
+        (currentIndex === totalPages - 1 && dx < 0)) {
+      drag = dx * 0.3;
+    }
+    setTrackPosition(baseTranslate + drag, false);
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!mouseDown) return;
+    mouseDown = false;
+    track.style.cursor = '';
+    const dx = mouseCurrentX - mouseStartX;
+    const threshold = Math.min(viewportWidth * 0.2, 80);
+    let target = currentIndex;
+    if (dx < -threshold && currentIndex < totalPages - 1) target = currentIndex + 1;
+    else if (dx > threshold && currentIndex > 0) target = currentIndex - 1;
+    goToPage(target, true);
+  });
+
+})();
+</script>
+
+</body>
+</html>
